@@ -45,7 +45,7 @@ class AdTestCase(APITestCase):
 
     def test_list_ad(self):
         """
-        тест вывода списка объявления
+        тест вывода списка объявлений
         """
         user = User.objects.create(email='dadad@test.com', password='edcrfvtgb', role='User')
         Ad.objects.create(title="ASDASDASD", price=15, description="sadasdasd", author=user)

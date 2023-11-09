@@ -25,11 +25,10 @@ from config import settings
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="API документация по приложению онлайн-школы",
+        title="API документация по для приложения по размещению объявлений",
         default_version='v1',
         description="",
-        terms_of_service="https://www.example.com/policies/terms/",
-        contact=openapi.Contact(email="contact@example.com"),
+        contact=openapi.Contact(email="jstoronsky@gmail.com"),
         license=openapi.License(name="BSD License"),
     ),
     public=True,
