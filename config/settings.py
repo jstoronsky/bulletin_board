@@ -12,11 +12,12 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from datetime import timedelta
 from pathlib import Path
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+load_dotenv(BASE_DIR / '.env')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -87,7 +88,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('DB_NAME'),
         'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD')
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': 'db'
     }
 }
 
@@ -128,7 +130,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = (
-  BASE_DIR / 'static',
+    BASE_DIR / 'static',
 )
 
 # Default primary key field type

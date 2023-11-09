@@ -28,13 +28,13 @@ class AdViewSet(viewsets.ModelViewSet):
         elif self.action in ['update', 'partial_update']:
             return AdUpdateSerializer
 
-    def get_permissions(self):
-        if self.action in ['create', 'retrieve']:
-            self.permission_classes = [IsAuthenticated]
-        elif self.action in ['update', 'partial_update', 'destroy']:
-            self.permission_classes = [IsAuthenticated, IsOwner | IsAdmin]
-
-        return super(AdViewSet, self).get_permissions()
+    # def get_permissions(self):
+    #     if self.action in ['create', 'retrieve']:
+    #         self.permission_classes = [IsAuthenticated]
+    #     elif self.action in ['update', 'partial_update', 'destroy']:
+    #         self.permission_classes = [IsAuthenticated, IsOwner | IsAdmin]
+    #
+    #     return super(AdViewSet, self).get_permissions()
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
@@ -45,7 +45,7 @@ class MyAdsListAPIView(generics.ListAPIView):
     эндпоинт для вывода своих объявлений
     """
     serializer_class = AdSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         author = self.request.user
@@ -58,7 +58,7 @@ class CommentsListAPIView(generics.ListAPIView):
     эндпоинт для вывода списка комментариев для конкретного объявления
     """
     serializer_class = CommentsSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         queryset = Comment.objects.filter(ad=self.kwargs['ad_pk'])
@@ -70,7 +70,7 @@ class CommentsRetrieveAPIView(generics.RetrieveAPIView):
     эндпоинт для вывода комментария конкретного объявления
     """
     serializer_class = CommentsSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         queryset = Comment.objects.filter(ad=self.kwargs['ad_pk'])
@@ -82,7 +82,7 @@ class CommentsCreateAPIView(generics.CreateAPIView):
     эндпоинт для создания комментария к конкретному объявлению
     """
     serializer_class = CommentsCreateSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
         ad_id = self.kwargs['ad_pk']
@@ -95,7 +95,7 @@ class CommentsUpdateAPIView(generics.UpdateAPIView):
     эндпоинт для обновления комментария
     """
     serializer_class = CommentsUpdateSerializer
-    permission_classes = [IsAuthenticated, IsOwner | IsAdmin]
+    # permission_classes = [IsAuthenticated, IsOwner | IsAdmin]
 
     def get_queryset(self):
         queryset = Comment.objects.filter(ad=self.kwargs['ad_pk'])
@@ -106,7 +106,7 @@ class CommentsDestroyAPIView(generics.DestroyAPIView):
     """
     эндпоинт для удаления комментария
     """
-    permission_classes = [IsAuthenticated, IsOwner | IsAdmin]
+    # permission_classes = [IsAuthenticated, IsOwner | IsAdmin]
 
     def get_queryset(self):
         queryset = Comment.objects.filter(ad=self.kwargs['ad_pk'])
