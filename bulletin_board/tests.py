@@ -58,7 +58,18 @@ class AdTestCase(APITestCase):
         """
         тест обновления объявления
         """
-        user = User.objects.create(email='dadada@test.com', password='edcrfvtgb', role='User')
+        user = User.objects.create(email='dadada@test.com')
+        user.set_password('edcrfvtgb')
+        user.save()
+        data1 = {
+            "email": "dadada@test.com",
+            "password": "edcrfvtgb"
+        }
+        user_response = self.client.post(
+            "/auth/jwt/create/",
+            data=data1
+        )
+        token = user_response.data['access']
         Ad.objects.create(title="ASDASDASD", price=15, description="sadasdasd", author=user)
 
         data = {
@@ -68,13 +79,15 @@ class AdTestCase(APITestCase):
 
         response = self.client.patch(
             '/api/ads/3/',
-            data=data
+            data=data,
+            headers={"Authorization": f"Bearer {token}"}
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         self.client.delete(
             '/api/ads/3/',
+            headers={"Authorization": f"Bearer {token}"}
         )
 
         queryset = Ad.objects.all()
@@ -126,19 +139,42 @@ class CommentTestCase(APITestCase):
         """
         тест вывода списка комментариев
         """
-        user = User.objects.create(email='dadad@test.com', password='edcrfvtgb', role='User')
+        user = User.objects.create(email='sutulaya_sobaka@test.com', password='wdzxczxyty')
+        user.set_password('wdzxczxyty')
+        user.save()
+        data1 = {
+            "email": "sutulaya_sobaka@test.com",
+            "password": "wdzxczxyty"
+        }
+        user_response = self.client.post(
+            "/auth/jwt/create/",
+            data=data1
+        )
+        token = user_response.data['access']
         ad = Ad.objects.create(title="ASDASDASD", price=15, description="sadasdasd", author=user)
         Comment.objects.create(text="ASDASDASD", ad=ad, author=user)
         response = self.client.get(
-            '/api/ads/5/comments/'
+            '/api/ads/5/comments/',
+            headers={"Authorization": f"Bearer {token}"}
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    def test_update_ad(self):
+    def test_update_comment(self):
         """
         тест обновления комментария
         """
         user = User.objects.create(email='dadada@test.com', password='edcrfvtgb', role='User')
+        user.set_password('edcrfvtgb')
+        user.save()
+        data1 = {
+            "email": "dadada@test.com",
+            "password": "edcrfvtgb"
+        }
+        user_response = self.client.post(
+            "/auth/jwt/create/",
+            data=data1
+        )
+        token = user_response.data['access']
         ad = Ad.objects.create(title="ASDASDASD", price=15, description="sadasdasd", author=user)
         Comment.objects.create(text="ASDASDASD", ad=ad, author=user)
 
@@ -148,13 +184,15 @@ class CommentTestCase(APITestCase):
 
         response = self.client.patch(
             '/api/ads/6/comments/3/upd/',
-            data=data
+            data=data,
+            headers={"Authorization": f"Bearer {token}"}
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         self.client.delete(
             '/api/ads/6/comments/3/delete/',
+            headers={"Authorization": f"Bearer {token}"}
         )
         queryset = Comment.objects.all()
         self.assertTrue(len(queryset) == 0)
